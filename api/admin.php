@@ -1,22 +1,7 @@
 <?php
 session_start();
 
-$admin_password = $_ENV['ADMIN_PASSWORD'] ?? $_SERVER['ADMIN_PASSWORD'] ?? getenv('ADMIN_PASSWORD') ?: 'security-tool-0627';
-
-// ─── ログイン処理 ────────────────────────────────────────
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['password'])) {
-    if ($_POST['password'] === $admin_password) {
-        $_SESSION['admin_auth'] = true;
-    } else {
-        $login_error = 'パスワードが正しくありません';
-    }
-}
-if (isset($_POST['logout'])) {
-    $_SESSION['admin_auth'] = false;
-    session_destroy();
-}
-
-$is_auth = !empty($_SESSION['admin_auth']);
+$is_auth = true;
 
 // ─── Supabase からデータ取得 ─────────────────────────────
 $submissions = [];
@@ -186,33 +171,10 @@ tr:hover td{background:#f8f9ff;}
 </head>
 <body>
 
-<?php if (!$is_auth): ?>
-<!-- ログイン画面 -->
-<div class="login-wrap">
-    <div class="login-card">
-        <h1>🔐 管理画面</h1>
-        <p>セキュリティ診断ツール 管理者専用</p>
-        <?php if (!empty($login_error)): ?>
-        <div class="error-msg"><?= htmlspecialchars($login_error) ?></div>
-        <?php endif; ?>
-        <form method="POST">
-            <div class="form-group">
-                <label>パスワード</label>
-                <input type="password" name="password" autofocus required>
-            </div>
-            <button type="submit" class="btn-login">ログイン</button>
-        </form>
-    </div>
-</div>
-
-<?php else: ?>
 <!-- 管理画面 -->
 <header class="admin-header">
     <h1>📊 診断データ管理画面</h1>
     <span class="badge"><?= count($submissions) ?>件</span>
-    <form method="POST" style="margin-left:8px">
-        <button type="submit" name="logout" class="btn-logout">ログアウト</button>
-    </form>
 </header>
 
 <div class="admin-body">
@@ -334,7 +296,5 @@ function toggleDetail(i) {
     panel.classList.toggle('open');
 }
 </script>
-
-<?php endif; ?>
 </body>
 </html>
