@@ -217,14 +217,17 @@ foreach ($no_answers as $qk) {
 // 優先度でソート
 usort($recs, fn($a,$b) => ($a['priority']==='high'?0:($a['priority']==='medium'?1:2)) <=> ($b['priority']==='high'?0:($b['priority']==='medium'?1:2)));
 
-// ─── DDHBOXプラン選定 ────────────────────────────────────
+// ─── DDHBOXプラン選定（5年リース・税別）────────────────────
 $ddhbox_plans = [
-    ['max_pc'=>10,  'plan'=>'プラン10',  'monthly'=>23900,  'yearly'=>286800 ],
-    ['max_pc'=>20,  'plan'=>'プラン20',  'monthly'=>38800,  'yearly'=>465600 ],
-    ['max_pc'=>30,  'plan'=>'プラン30',  'monthly'=>52800,  'yearly'=>633600 ],
-    ['max_pc'=>50,  'plan'=>'プラン50',  'monthly'=>78000,  'yearly'=>936000 ],
-    ['max_pc'=>100, 'plan'=>'プラン100', 'monthly'=>145000, 'yearly'=>1740000],
-    ['max_pc'=>999, 'plan'=>'エンタープライズ', 'monthly'=>0, 'yearly'=>0 ],
+    ['max_pc'=>10,   'plan'=>'プラン10',   'monthly'=>24300,   'yearly'=>291600  ],
+    ['max_pc'=>20,   'plan'=>'プラン20',   'monthly'=>29800,   'yearly'=>357600  ],
+    ['max_pc'=>30,   'plan'=>'プラン30',   'monthly'=>41300,   'yearly'=>495600  ],
+    ['max_pc'=>50,   'plan'=>'プラン50',   'monthly'=>52900,   'yearly'=>634800  ],
+    ['max_pc'=>100,  'plan'=>'プラン100',  'monthly'=>75900,   'yearly'=>910800  ],
+    ['max_pc'=>300,  'plan'=>'プラン300',  'monthly'=>172300,  'yearly'=>2067600 ],
+    ['max_pc'=>500,  'plan'=>'プラン500',  'monthly'=>282600,  'yearly'=>3391200 ],
+    ['max_pc'=>1000, 'plan'=>'プラン1000', 'monthly'=>558100,  'yearly'=>6697200 ],
+    ['max_pc'=>9999, 'plan'=>'エンタープライズ', 'monthly'=>0, 'yearly'=>0 ],
 ];
 $selected_plan = end($ddhbox_plans);
 foreach ($ddhbox_plans as $p) {
@@ -490,20 +493,28 @@ if ($supabase_url && $supabase_key) {
                 <?php if ($selected_plan['monthly'] > 0): ?>
                 <div class="plan-price-row">
                     <div class="plan-price-item">
-                        <span class="plan-price-label">月額</span>
+                        <span class="plan-price-label">月額（税別）</span>
                         <span class="plan-price-value">¥<?= number_format($selected_plan['monthly']) ?><small>/月</small></span>
                     </div>
                     <div class="plan-price-item">
-                        <span class="plan-price-label">年額</span>
+                        <span class="plan-price-label">年額（税別）</span>
                         <span class="plan-price-value">¥<?= number_format($selected_plan['yearly']) ?><small>/年</small></span>
                     </div>
                     <div class="plan-price-item highlight">
-                        <span class="plan-price-label">5年総額</span>
+                        <span class="plan-price-label">5年総額（税別）</span>
                         <span class="plan-price-value">¥<?= number_format($selected_plan['yearly']*5) ?></span>
                     </div>
                 </div>
+                <div class="plan-initial-cost">
+                    <span class="plan-initial-label">初期費用（別途）</span>
+                    <span class="plan-initial-value">本体機器 ¥282,400 ＋ 設置費用 ¥80,000（税別）</span>
+                </div>
                 <?php else: ?>
                 <p style="color:#546e7a;font-size:0.9rem;margin-top:8px;">台数が多いためカスタムプランにてお見積もりします。お問い合わせください。</p>
+                <div class="plan-initial-cost">
+                    <span class="plan-initial-label">初期費用（別途）</span>
+                    <span class="plan-initial-value">本体機器 ¥282,400 ＋ 設置費用 ¥80,000（税別）</span>
+                </div>
                 <?php endif; ?>
             </div>
         </div>
