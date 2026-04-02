@@ -370,7 +370,8 @@ if ($supabase_url && $supabase_key) {
             'Authorization: Bearer ' . $supabase_key,
             'Prefer: return=minimal',
         ],
-        CURLOPT_TIMEOUT => 5,
+        CURLOPT_TIMEOUT        => 15,
+        CURLOPT_SSL_VERIFYPEER => false,
     ]);
     curl_exec($ch);
     curl_close($ch);
