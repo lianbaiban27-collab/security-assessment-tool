@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-$admin_password = getenv('ADMIN_PASSWORD') ?: 'admin1234';
+$admin_password = $_ENV['ADMIN_PASSWORD'] ?? $_SERVER['ADMIN_PASSWORD'] ?? getenv('ADMIN_PASSWORD') ?: 'security-tool-0627';
 
 // ─── ログイン処理 ────────────────────────────────────────
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['password'])) {
@@ -22,8 +22,8 @@ $is_auth = !empty($_SESSION['admin_auth']);
 $submissions = [];
 $fetch_error = null;
 if ($is_auth) {
-    $supabase_url = getenv('SUPABASE_URL');
-    $supabase_key = getenv('SUPABASE_ANON_KEY');
+    $supabase_url = $_ENV['SUPABASE_URL'] ?? $_SERVER['SUPABASE_URL'] ?? getenv('SUPABASE_URL');
+    $supabase_key = $_ENV['SUPABASE_ANON_KEY'] ?? $_SERVER['SUPABASE_ANON_KEY'] ?? getenv('SUPABASE_ANON_KEY');
     if ($supabase_url && $supabase_key) {
         $url = $supabase_url . '/rest/v1/submissions?select=*&order=created_at.desc';
         $ch  = curl_init($url);

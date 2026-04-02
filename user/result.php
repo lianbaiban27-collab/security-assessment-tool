@@ -341,8 +341,8 @@ $answer_labels = ['yes' => '◎ はい（対策済み）', 'unknown' => '△ わ
 $today = date('Y年m月d日');
 
 // ─── Supabase 保存 ───────────────────────────────────────
-$supabase_url = getenv('SUPABASE_URL');
-$supabase_key = getenv('SUPABASE_ANON_KEY');
+$supabase_url = $_ENV['SUPABASE_URL'] ?? $_SERVER['SUPABASE_URL'] ?? getenv('SUPABASE_URL');
+$supabase_key = $_ENV['SUPABASE_ANON_KEY'] ?? $_SERVER['SUPABASE_ANON_KEY'] ?? getenv('SUPABASE_ANON_KEY');
 if ($supabase_url && $supabase_key) {
     $payload = json_encode([
         'company_name'     => $company_name,
